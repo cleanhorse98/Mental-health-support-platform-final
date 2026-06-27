@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Support Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-heart"></i>
+                <span>MHP</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#" class="nav-link active" data-section="home">Home</a>
+                <a href="#" class="nav-link" data-section="resources">Resources</a>
+                <a href="#" class="nav-link" data-section="journal">Journal</a>
+                <a href="#" class="nav-link" data-section="forum">Forum</a>
+                <a href="#" class="nav-link" data-section="chat">Chat</a>
+                <a href="#" class="nav-link" data-section="mood">Mood Tracker</a>
+                <a href="#" class="nav-link admin-only" data-section="admin" style="display: none;">Admin</a>
+            </div>
+            <div class="nav-auth" id="nav-auth">
+                <button class="btn btn-primary auth-toggle" data-type="login">Login</button>
+                <button class="btn btn-secondary auth-toggle" data-type="register">Register</button>
+            </div>
+            <div class="nav-user" id="nav-user" style="display: none;">
+                <div class="user-info">
+                    <span id="user-name">User</span>
+                    <button class="btn btn-outline logout-btn">Logout</button>
+                </div>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Mental Health Support Platform</h1>
+                    <p>A safe space for students to access mental health resources, share feelings anonymously, and connect with counselors.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-large auth-toggle" data-type="register">Get Started</button>
+                        <button class="btn btn-outline btn-large" data-section="resources">Learn More</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="floating-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>Mental Wellness</h3>
+                        <p>Your mental health matters</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-section="resources">
+                    <i class="fas fa-book-open"></i>
+                    <h3>Resource Hub</h3>
+                    <p>Access curated mental health articles, videos, and self-help guides.</p>
+                </div>
+                <div class="feature-card" data-section="journal">
+                    <i class="fas fa-pen-fancy"></i>
+                    <h3>Anonymous Journaling</h3>
+                    <p>Share your feelings anonymously on our supportive community wall.</p>
+                </div>
+                <div class="feature-card" data-section="forum">
+                    <i class="fas fa-comments"></i>
+                    <h3>Peer Support</h3>
+                    <p>Connect with other students in our moderated discussion forums.</p>
+                </div>
+                <div class="feature-card" data-section="chat">
+                    <i class="fas fa-user-md"></i>
+                    <h3>Counselor Chat</h3>
+                    <p>Private, confidential chat with verified counselors and mentors.</p>
+                </div>
+                <div class="feature-card" data-section="mood">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Mood Tracking</h3>
+                    <p>Track your mood patterns and get personalized insights.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Safe & Private</h3>
+                    <p>Your privacy and security are our top priorities.</p>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard Section (Only visible to admins) -->
+            <div class="admin-dashboard-home admin-only" style="display: none;">
+                <div class="section-header">
+                    <h2>Admin Dashboard</h2>
+                    <p>Quick overview and management tools</p>
+                </div>
+                
+                <div class="admin-overview-grid">
+                    <!-- Quick Stats -->
+                    <div class="admin-stats-cards">
+                        <div class="admin-stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <h3 id="total-users-count">-</h3>
+                                <p>Total Users</p>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon">📚</div>
+                            <div class="stat-content">
+                                <h3 id="total-resources-count">-</h3>
+                                <p>Resources</p>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon">📝</div>
+                            <div class="stat-content">
+                                <h3 id="total-journal-entries">-</h3>
+                                <p>Journal Entries</p>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="stat-icon">🚨</div>
+                            <div class="stat-content">
+                                <h3 id="flagged-entries-count">-</h3>
+                                <p>Flagged Content</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="admin-quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="showAddResourceForm()">
+                                <i class="fas fa-plus"></i> Add Resource
+                            </button>
+                            <button class="btn btn-secondary" onclick="showSection('admin')">
+                                <i class="fas fa-users"></i> Manage Users
+                            </button>
+                            <button class="btn btn-outline" onclick="loadFlaggedEntries()">
+                                <i class="fas fa-flag"></i> Review Flagged
+                            </button>
+                            <button class="btn btn-outline" onclick="showSection('mood')">
+                                <i class="fas fa-chart-line"></i> Mood Analytics
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="admin-recent-activity">
+                        <h3>Recent Activity</h3>
+                        <div class="activity-list" id="recent-activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">📊</div>
+                                <div class="activity-content">
+                                    <p>Loading recent activity...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User Management Quick View -->
+                    <div class="admin-users-preview">
+                        <h3>Recent Users</h3>
+                        <div class="users-list" id="recent-users-list">
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <p>Loading users...</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-full" onclick="showSection('admin')">
+                            View All Users
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="section">
+            <div class="section-header">
+                <h2>Mental Health Resources</h2>
+                <p>Curated content to support your mental wellness journey</p>
+            </div>
+            
+            <div class="resources-container">
+                <div class="resources-sidebar">
+                    <div class="search-box">
+                        <input type="text" id="resource-search" placeholder="Search resources...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    
+                    <div class="category-filter">
+                        <h4>Categories</h4>
+                        <div class="category-list" id="category-list">
+                            <!-- Categories will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="resources-main">
+                    <div class="resources-grid" id="resources-grid">
+                        <!-- Resources will be loaded here -->
+                    </div>
+                    
+                    <div class="pagination" id="resources-pagination">
+                        <!-- Pagination will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Journal Section -->
+        <section id="journal" class="section">
+            <div class="section-header">
+                <h2>Feelings Wall & Journal</h2>
+                <p>Share your thoughts anonymously and support others</p>
+            </div>
+            
+            <div class="journal-container">
+                <div class="journal-sidebar">
+                    <button class="btn btn-primary btn-full" id="show-journal-modal">
+                        <i class="fas fa-plus"></i> New Entry
+                    </button>
+                    
+                    <div class="journal-filters">
+                        <h4>Filter by Mood</h4>
+                        <div class="mood-filters" id="mood-filters">
+                            <!-- Mood filters will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="journal-main">
+                    <div class="journal-entries" id="journal-entries">
+                        <!-- Journal entries will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Forum Section -->
+        <section id="forum" class="section">
+            <div class="section-header">
+                <h2>Peer Support Forum</h2>
+                <p>Connect with other students in moderated discussions</p>
+            </div>
+            
+            <div class="forum-container">
+                <div class="forum-topics" id="forum-topics">
+                    <!-- Forum topics will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="section">
+            <div class="section-header">
+                <h2>Advanced Chat with AI Counselors</h2>
+                <p>Intelligent conversations with AI-powered mental health support</p>
+            </div>
+            
+            <div class="chat-interface">
+                <!-- Chat Sidebar -->
+                <div class="chat-sidebar">
+                    <div class="chat-sidebar-header">
+                        <h3>Chat Rooms</h3>
+                        <button class="btn btn-sm btn-primary" id="create-room-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="chat-rooms" id="chat-rooms">
+                        <!-- Chat rooms will be loaded here -->
+                    </div>
+                    
+                    <div class="chat-sidebar-footer">
+                        <h4>Available Counselors</h4>
+                        <div class="counselors-list" id="counselors-list">
+                            <!-- Counselors will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Main Chat Area -->
+                <div class="chat-main">
+                    <div class="chat-header">
+                        <div class="chat-header-info">
+                            <h3 id="current-room-name">General Support</h3>
+                            <span class="room-status" id="room-status">15 participants</span>
+                        </div>
+                        <div class="chat-header-actions">
+                            <button class="btn btn-sm btn-outline" id="search-chat-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline" id="voice-chat-btn">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline" id="video-chat-btn">
+                                <i class="fas fa-video"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-messages-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <!-- Messages will be loaded here -->
+                        </div>
+                        
+                        <div class="typing-indicator" id="typing-indicator" style="display: none;">
+                            <div class="typing-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <span class="typing-text">AI Counselor is typing...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chat-input-area">
+                        <div class="chat-input-toolbar">
+                            <button class="toolbar-btn" id="emoji-btn" data-action="emoji" title="Emoji">
+                                <i class="fas fa-smile"></i>
+                            </button>
+                            <button class="toolbar-btn" id="file-btn" data-action="file" title="Attach File">
+                                <i class="fas fa-paperclip"></i>
+                            </button>
+                            <button class="toolbar-btn" id="voice-btn" data-action="voice" title="Voice Message">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="toolbar-btn" id="gif-btn" data-action="gif" title="GIF">
+                                <i class="fas fa-gift"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <textarea id="chat-input-field" placeholder="Type your message..." rows="1"></textarea>
+                            <button class="btn btn-primary send-btn" id="send-message-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="chat-quick-actions">
+                            <button class="quick-action-btn" data-action="greeting">
+                                👋 Hello
+                            </button>
+                            <button class="quick-action-btn" data-action="stress">
+                                😰 I'm stressed
+                            </button>
+                            <button class="quick-action-btn" data-action="anxiety">
+                                😰 Anxiety help
+                            </button>
+                            <button class="quick-action-btn" data-action="depression">
+                                😢 Feeling sad
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- File Upload Modal -->
+            <div id="file-upload-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Attach File</h3>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="file-upload-area">
+                            <input type="file" id="file-input" multiple accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt">
+                            <div class="upload-placeholder">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag and drop files here or click to browse</p>
+                                <span>Max file size: 10MB</span>
+                            </div>
+                        </div>
+                        <div id="file-preview" class="file-preview"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="cancel-upload">Cancel</button>
+                        <button class="btn btn-primary" id="send-files">Send Files</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Emoji Picker Modal -->
+            <div id="emoji-picker-modal" class="modal" style="display: none;">
+                <div class="modal-content emoji-picker">
+                    <span class="close close-modal" onclick="closeModal('emoji-picker-modal')">&times;</span>
+                    <div class="emoji-categories">
+                        <button class="emoji-category active" data-category="recent">🕒</button>
+                        <button class="emoji-category" data-category="smileys">😊</button>
+                        <button class="emoji-category" data-category="animals">🐶</button>
+                        <button class="emoji-category" data-category="food">🍕</button>
+                        <button class="emoji-category" data-category="activities">⚽</button>
+                        <button class="emoji-category" data-category="travel">✈️</button>
+                        <button class="emoji-category" data-category="objects">💡</button>
+                        <button class="emoji-category" data-category="symbols">❤️</button>
+                    </div>
+                    <div class="emoji-grid" id="emoji-grid">
+                        <!-- Emojis will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mood Tracker Section -->
+        <section id="mood" class="section">
+            <div class="section-header">
+                <h2>Mood Tracker</h2>
+                <p>Track your daily mood and discover patterns</p>
+            </div>
+            
+            <div class="mood-container">
+                <!-- Mood content will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin" class="section admin-only" style="display: none;">
+            <div class="section-header">
+                <h2>Admin Dashboard</h2>
+                <p>Manage users, content, and platform analytics</p>
+            </div>
+            
+            <div class="admin-container">
+                <div class="admin-sidebar">
+                    <div class="admin-nav">
+                        <button class="admin-nav-btn active" data-tab="overview">Overview</button>
+                        <button class="admin-nav-btn" data-tab="users">Users</button>
+                        <button class="admin-nav-btn" data-tab="resources">Resources</button>
+                        <button class="admin-nav-btn" data-tab="moderation">Moderation</button>
+                    </div>
+                </div>
+                
+                <div class="admin-main">
+                    <div id="admin-overview" class="admin-tab active">
+                        <!-- Admin overview will be loaded here -->
+                    </div>
+                    
+                    <div id="admin-users" class="admin-tab">
+                        <!-- User management will be loaded here -->
+                    </div>
+                    
+                    <div id="admin-resources" class="admin-tab">
+                        <!-- Resource management will be loaded here -->
+                    </div>
+                    
+                    <div id="admin-moderation" class="admin-tab">
+                        <!-- Moderation tools will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close close-modal">&times;</span>
+            
+            <div id="login-container" class="auth-form">
+                <h2>Welcome Back</h2>
+                <p class="subtitle">Sign in to your account to continue</p>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Don't have an account? <a href="#" class="auth-toggle" data-type="register">Create Account</a></p>
+                </div>
+            </div>
+            
+            <div id="register-container" class="auth-form" style="display: none;">
+                <h2>Join Our Community</h2>
+                <p class="subtitle">Create your account to access mental health resources and support</p>
+                
+                <div class="form-progress">
+                    <div class="progress-step active"></div>
+                    <div class="progress-step"></div>
+                    <div class="progress-step"></div>
+                </div>
+                
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" name="username" placeholder="Choose a unique username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-email">Email Address</label>
+                        <input type="email" id="register-email" name="email" placeholder="Enter your email address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" name="password" placeholder="Create a strong password" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-firstname">First Name</label>
+                            <input type="text" id="register-firstname" name="firstName" placeholder="Enter your first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-lastname">Last Name</label>
+                            <input type="text" id="register-lastname" name="lastName" placeholder="Enter your last name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-studentid">Student ID</label>
+                        <input type="text" id="register-studentid" name="studentId" placeholder="Enter your student ID" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-department">Department</label>
+                            <select id="register-department" name="department" required>
+                                <option value="">Select Department</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Chemical Engineering">Chemical Engineering</option>
+                                <option value="Biomedical Engineering">Biomedical Engineering</option>
+                                <option value="Aerospace Engineering">Aerospace Engineering</option>
+                                <option value="Industrial Engineering">Industrial Engineering</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-year">Year</label>
+                            <select id="register-year" name="year" required>
+                                <option value="">Select Year</option>
+                                <option value="1st">1st Year</option>
+                                <option value="2nd">2nd Year</option>
+                                <option value="3rd">3rd Year</option>
+                                <option value="4th">4th Year</option>
+                                <option value="Graduate">Graduate</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </form>
+                
+                <div class="form-footer">
+                    <p>Already have an account? <a href="#" class="auth-toggle" data-type="login">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal Modal -->
+    <div id="journal-modal" class="modal">
+        <div class="modal-content">
+            <span class="close close-modal">&times;</span>
+            <h2>New Journal Entry</h2>
+                          <form id="journal-entry-form">
+                <div class="form-group">
+                    <label for="journal-content">How are you feeling?</label>
+                    <textarea id="journal-content" name="content" rows="4" placeholder="Share your thoughts, feelings, or experiences..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="journal-mood">Mood</label>
+                    <select id="journal-mood" name="mood" required>
+                        <option value="">Select your mood</option>
+                        <option value="very-happy">Very Happy 😊</option>
+                        <option value="happy">Happy 🙂</option>
+                        <option value="neutral">Neutral 😐</option>
+                        <option value="sad">Sad 😔</option>
+                        <option value="very-sad">Very Sad 😢</option>
+                        <option value="anxious">Anxious 😰</option>
+                        <option value="stressed">Stressed 😤</option>
+                        <option value="excited">Excited 🤩</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="journal-category">Category</label>
+                    <select id="journal-category" name="category" required>
+                        <option value="general">General</option>
+                        <option value="academic">Academic</option>
+                        <option value="personal">Personal</option>
+                        <option value="relationships">Relationships</option>
+                        <option value="health">Health</option>
+                        <option value="future">Future</option>
+                        <option value="gratitude">Gratitude</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="journal-public" name="isPublic" checked>
+                        Share publicly (anonymous)
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Post Entry</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
